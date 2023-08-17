@@ -1,0 +1,5 @@
+1. Closed access reports
+2. Additions to compare page (changing universities on both sides and changing timeframe)
+3. Dimensions API (for further analysis?)
+4. Allowing other institutions to collaborate and contribute their API and API secret keys
+5. Specific language searching
