@@ -298,7 +298,7 @@ def createLanguageBarGraph(data_open, data_closed):
     # Sort the list of tuples by counts_open and counts_closed (2nd and 3rd element) in descending order
     combined.sort(key=lambda x: x[1]+x[2], reverse=True)
 
-    # extract the top 20 languages
+    # extract the top 15 languages
     combined = combined[:15]
 
     # Extract the sorted languages, counts_open and counts_closed
@@ -309,12 +309,11 @@ def createLanguageBarGraph(data_open, data_closed):
     # create bar graph
     plt.figure(figsize=(17, 10))
     bar_width = 0.4
-    hatches = ['//', '*']
     bars_open = plt.bar(x_coords - bar_width/2, counts_open_sorted, width=bar_width, color='#00cc00', align='center', label='Open Access')
     bars_closed = plt.bar(x_coords + bar_width/2, counts_closed_sorted, width=bar_width, color='red', align='center', label='Closed Access')
     # plt.xlim(min(x_coords)-bar_width, max(x_coords)+bar_width)
     plt.ylim(0, max(max(counts_open_sorted), max(counts_closed_sorted)) * 1.1) # 10% padding
-    plt.title('Top 20 Wikipedia Sites with the Most Citations')
+    plt.title('Top 15 Wikipedia Sites with the Most Citations')
     plt.xlabel('Wikipedia Site')
     plt.ylabel('Citation Count')
     plt.legend()

@@ -1,9 +1,8 @@
 from flask import Flask, request, jsonify, make_response
 import sqlite3
-# from flask_sqlalchemy import SQLAlchemy
 import requests
 
-from server2 import getGridID, getDigest, getOADigest, getORCIDDigest, getOAORCIDDigest
+from generate import getGridID, getDigest, getOADigest, getORCIDDigest, getOAORCIDDigest
 from datavis import createOAPieChart, createOATypesPieChart, createLanguageBarGraph
 
 app = Flask(__name__)
