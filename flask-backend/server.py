@@ -39,7 +39,7 @@ def search_institutions():
         print(f"Failed to query database: {str(e)}")
         return f"Error: {str(e)}"
 
-api_key = 'ab2ac84dad114f7cb3bb2d3094359b99'
+api_key = '35ef0a1fc0e9462fb7baac1b0c43f951'
 
 @app.route('/orcid', methods=['GET'])
 def orcid():

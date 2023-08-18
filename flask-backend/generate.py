@@ -3,7 +3,7 @@ import hmac
 import hashlib
 import urllib.parse
 
-api_secret = '6b55ed61dcff4dbfbdb39be746d9f796'
+api_secret = '124a1a290ead4aa1ba7f0f86812daebf'
 
 # retrieves the GRID ID of the institution from the Registry of Research (ROR) API
 def getGridID(institution):
