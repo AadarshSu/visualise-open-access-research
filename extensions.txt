@@ -3,10 +3,13 @@
     - Generate a CSV/Excel file with the list of all the Wikipedia URLs to those closed access citations by iterating through
         paginated API response
     - Allow the selection of different timeframes for the CSV file
-2. Additions to compare page (changing universities on both sides and changing timeframe)
+2. Additions to compare page
+    - Changing universities on both sides and changing timeframe on the page
     - Conduct statistical analysis for open access in the backend such as significance of difference in open access percentage 
         due to difference in number of citations and display this information in the Compare page in the frontend
+    - Allowing comparison for ORCID IDs
 3. Dimensions AI API (for further analysis?)
+    - https://www.dimensions.ai 
     - https://help.altmetric.com/support/solutions/articles/6000236718-dimensions-citation-data
 4. Allowing other institutions to collaborate and contribute their API and API secret keys
     - Allow users to contribute their API and API secret keys in the frontend to give website access to full institutional data
