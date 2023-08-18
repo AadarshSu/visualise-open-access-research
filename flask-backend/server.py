@@ -100,8 +100,6 @@ def orcid():
 @app.route('/institution', methods=['GET'])
 def institution():
     institution = request.args.get('institution')
-    # check if institution exists in database
-    
     timeframe = request.args.get('timeframe')
     grid_id, institution_name = getGridID(institution)
     digest = getDigest(grid_id, timeframe)
@@ -159,7 +157,7 @@ def institution_oa_breakdown():
     print("clicked")
     institution = request.args.get('institution')
     timeframe = request.args.get('timeframe')
-    grid_id, institution_name = getGridID(institution)
+    grid_id, _ = getGridID(institution)
 
     allOAdigest = getOADigest(grid_id, 'all', timeframe)
     goldOAdigest = getOADigest(grid_id, 'gold', timeframe)

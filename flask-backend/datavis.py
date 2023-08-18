@@ -248,32 +248,64 @@ def createLanguageBarGraph(data_open, data_closed):
 
     languages_open = []
     languages_closed = []
-    executor = ThreadPoolExecutor(max_workers=10)
+    # executor = ThreadPoolExecutor(max_workers=10)
 
-    # iterate through paginated JSON response and extract the language of each citation
+    # FASTER BUT NOT WORKING FOR REASON: RuntimeError: cannot schedule new futures after shutdown
+
+    # while True:
+    #     futures = [executor.submit(process_data, entry, language_map) for entry in data_open["data"]]
+    #     for future in concurrent.futures.as_completed(futures):
+    #         languages_open.append(future.result())
+
+    #     futures = [executor.submit(process_data, entry, language_map) for entry in data_closed["data"]]
+    #     for future in concurrent.futures.as_completed(futures):
+    #         languages_closed.append(future.result())
+
+    #     # check if 'next' key is in the response, if not break the loop
+    #     if 'next' not in data_open["links"]:
+    #         break
+    #     # get the next page of the JSON response
+    #     next_page = data_open["links"]["next"]
+    #     next_page = urllib.parse.unquote(next_page)
+    #     data_open = executor.submit(fetch_data, next_page).result()
+
+    #     if 'next' not in data_closed["links"]:
+    #         break
+    #     # get the next page of the JSON response
+    #     next_page = data_closed["links"]["next"]
+    #     next_page = urllib.parse.unquote(next_page)
+    #     data_closed = executor.submit(fetch_data, next_page).result()
+
+    # Iterate through paginated JSON response and extract the language of each citation
     while True:
-        futures = [executor.submit(process_data, entry, language_map) for entry in data_open["data"]]
-        for future in concurrent.futures.as_completed(futures):
-            languages_open.append(future.result())
+        # Process data for open citations
+        for entry in data_open["data"]:
+            language = process_data(entry, language_map)
+            languages_open.append(language)
 
-        futures = [executor.submit(process_data, entry, language_map) for entry in data_closed["data"]]
-        for future in concurrent.futures.as_completed(futures):
-            languages_closed.append(future.result())
+        # Process data for closed citations
+        for entry in data_closed["data"]:
+            language = process_data(entry, language_map)
+            languages_closed.append(language)
 
-        # check if 'next' key is in the response, if not break the loop
+        # Check if 'next' key is in the response, if not break the loop
         if 'next' not in data_open["links"]:
             break
-        # get the next page of the JSON response
+
+        # Get the next page of the JSON response for open citations
         next_page = data_open["links"]["next"]
         next_page = urllib.parse.unquote(next_page)
-        data_open = executor.submit(fetch_data, next_page).result()
+        data_open = fetch_data(next_page)
 
         if 'next' not in data_closed["links"]:
             break
-        # get the next page of the JSON response
+
+        # Get the next page of the JSON response for closed citations
         next_page = data_closed["links"]["next"]
         next_page = urllib.parse.unquote(next_page)
-        data_closed = executor.submit(fetch_data, next_page).result()
+        data_closed = fetch_data(next_page)
+
+    # executor.shutdown(wait=True)
 
     language_count_open = Counter(languages_open)
     language_count_closed = Counter(languages_closed)
