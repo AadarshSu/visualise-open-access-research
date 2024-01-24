@@ -1,6 +1,7 @@
 import matplotlib
 import requests
 import urllib
+import pandas as pd
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import io
@@ -376,4 +377,56 @@ def createLanguageBarGraph(data_open, data_closed):
     plt.close()
 
     return image_base64
+
+# retrieve and iterate over all closed access citations and extract the url - create csv file with list of urls
+def createURLCSV(data):
+    # check if data is empty
+    if data["data"] == []:
+        return None
+
+    # create BytesIO object to store the csv file
+    downloadable_file = io.BytesIO()
+    # text string to store the csv content
+    file_content = 'Wikipedia Article,Wikipedia URL, Research Title,DOI,OA Status,OA Type\n'
+
+    # go into data, relationships, research-outputs, data, id, then go inside included, attributes, 
+    # get title, go into identifiers, get doi, go out of identifiers, get oa-status, and oa-type
+    while True:
+        for entry in data["data"]:
+            id = entry["relationships"]["research-outputs"][0]["data"]["id"]
+            wiki_title = entry["attributes"]["title"]
+            # get just the url of the Wikipedia language site
+            wiki_lang_url = entry["attributes"]["url"].split('/')[2]
+            # search for the id in the included array
+            for included in data["included"]:
+                if included["id"] == id:
+                    doi_title = included["attributes"]["title"]
+                    doi = included["attributes"]["identifiers"]["dois"][0]
+                    oa_status = included["attributes"]["oa-status"]
+                    oa_type = included["attributes"]["oa-type"]
+                    doiURL = 'https://doi.org/' + doi
+
+                    # constructing Wikipedia URL
+                    wikipedia_url = f"https://{wiki_lang_url}/wiki/{wiki_title.replace(' ', '_')}"
+
+                    # append title, doiURL, oa_status, an d oa_type to the csv file
+                    file_content += f'"{wiki_title}",{wikipedia_url},"{doi_title}",{doiURL},{str(oa_status)}, {oa_type}\n'
+
+        # check if 'next' key is in the response, if not break the loop
+        if 'next' not in data["links"]:
+            break
+
+        # get the next page of the JSON response
+        next_page = data["links"]["next"]
+        next_page = urllib.parse.unquote(next_page)
+        data = fetch_data(next_page)
+
+    # encode the file content into bytes and write it to the BytesIO object
+    downloadable_file.write(file_content.encode())
+    
+    # close the BytesIO object
+    downloadable_file.seek(0)
+
+    return downloadable_file
+
 

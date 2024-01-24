@@ -68,6 +68,7 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
+  margin-bottom: 20px;
 }
 
 .search-select {
@@ -79,6 +80,7 @@ body {
   color: #333;
   margin-right: 15px;
   width: 120px;
+  margin-bottom: 20px;
 }
 
 .search-bar, .institution-select input {
@@ -90,6 +92,27 @@ body {
   color: #333;
   margin-right: 15px;
   width: 300px;
+  margin-bottom: 20px;
+}
+
+.api-container {
+  outline: 2px dashed blue;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 500px; 
+  margin-bottom: 20px;
+}
+
+/* title of api-container */
+.api-text {
+  font-size: 1.5em;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
 .institution-select {
@@ -112,7 +135,6 @@ body {
   z-index: 1;  /* Ensures the dropdown appears above any elements below it */
 }
 
-
 .search-button {
   padding: 10px 20px;
   font-size: 16px;
@@ -122,6 +144,7 @@ body {
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  margin-bottom: 40px;
 }
 
 .search-button:hover {
@@ -131,6 +154,15 @@ body {
 .results-container {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 500px; 
+}
+
+.email-container {
+  display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
@@ -150,7 +182,7 @@ body {
   height: auto;
 }
 
-.details-button, .language-details-button, .language-search-button,  .compare-button, .change-institution-button {
+.details-button, .language-details-button, .language-search-button,  .compare-button, .change-institution-button, .download-button, .email-button {
   padding: 10px 20px;
   font-size: 16px;
   background-color: #007bff;
@@ -190,7 +222,7 @@ body {
   transition: background-color 0.2s ease;
 }
 
-.details-button:hover, .language-details-button:hover, .language-search-button:hover, .compare-button:hover, .change-institution-button:hover {
+.details-button:hover, .language-details-button:hover, .language-search-button:hover, .compare-button:hover, .change-institution-button:hover, .download-button:hover, .email-button:hover {
   background-color: #0056b3;
 }
 

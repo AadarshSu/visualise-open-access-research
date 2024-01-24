@@ -13,6 +13,8 @@ function SearchForm({ onSearch }) {
   const [searchType, setSearchType] = React.useState("institution");
   const [timeframe, setTimeframe] = React.useState("all");
   const [isLoading, setIsLoading] = React.useState(false);
+  const [apiKey, setApiKey] = React.useState("");
+  const [secretKey, setSecretKey] = React.useState("");
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -32,12 +34,26 @@ function SearchForm({ onSearch }) {
     setTimeframe(event.target.value);
   };
 
+  const handleApiKeyChange = (event) => {
+    setApiKey(event.target.value);
+  };
+
+  const handleSecretKeyChange = (event) => {
+    setSecretKey(event.target.value);
+  };
+
   const handleSearch = () => {
+
+    if (!searchQuery) {
+      alert('Please fill in the required textbox (insitution name/ORCID ID).');
+      return;
+    }
+
     setIsLoading(true);
 
     const selectedTimeframe = timeframe || "all";
 
-    onSearch(searchQuery, searchType, selectedTimeframe)
+    onSearch(searchQuery, searchType, selectedTimeframe, apiKey, secretKey)
       .then(() => {
         navigate("/results");
       })
@@ -80,9 +96,28 @@ function SearchForm({ onSearch }) {
           <option value="6months">Last 6 months</option>
           <option value="year">Last year</option>
         </select>
-
-        <button className="search-button" onClick={handleSearch}>Search</button>
       </div>
+      {searchType === "institution" && (
+        <div className="api-container">
+            <p className="api-text">Optional: Enter Altmetric API Keys (for chosen institution) For More Accurate Results</p>
+            <input
+              type="password"
+              placeholder="Enter Altmetric API Key"
+              className="search-bar"
+              value={apiKey}
+              onChange={handleApiKeyChange}
+            />
+            
+            <input
+              type="password"
+              placeholder="Enter Altmetric Secret Key"
+              className="search-bar"
+              value={secretKey}
+              onChange={handleSecretKeyChange}
+            />
+        </div>
+      )}
+        <button className="search-button" onClick={() => handleSearch(searchQuery, searchType, timeframe, apiKey, secretKey)}>Search</button>
     </div>
   );
 }
@@ -97,7 +132,8 @@ function App() {
     }
   }, []);
 
-  const handleSearch = (query, type, timeframe) => {
+  const handleSearch = (query, type, timeframe, apiKey, secretKey) => {
+    console.log("HELLO: ", query, type, timeframe, apiKey, secretKey)
     // map the timeframe to the correct format
     switch (timeframe) {
       case "all":
@@ -127,12 +163,18 @@ function App() {
       default:
         timeframe = "all";
     }
-    return fetch(`/${type}?${type}=${query}&timeframe=${timeframe}`)
+    let apiUrl = `/${type}?${type}=${query}&timeframe=${timeframe}`;
+    if (apiKey !== "" && secretKey !== "") {
+      console.log("API keys present:", apiKey, secretKey);
+      apiUrl += `&api_key=${apiKey}&api_secret=${secretKey}`;
+    }
+    console.log("API URL:", apiUrl)
+    return fetch(apiUrl)
       .then(response => {
         if(!response.ok) {
-          alert('Error: Invalid input. Please check your ORCID ID or institution name and try again.')
-          // throw new Error("An error occurred");
-          return;
+          alert('Error: Invalid input. Please check your ORCID ID, API key, or Secret key and try again.')
+          throw new Error("An error occurred");
+          // return;
         }
         return response.json();
       })
