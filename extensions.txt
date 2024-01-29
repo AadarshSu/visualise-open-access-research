@@ -1,20 +1,21 @@
-1. Closed access reports
-    - Make an API request to the Altmetrics Explorer API for all closed access citations for an institution/author
-    - Generate a CSV/Excel file with the list of all the Wikipedia URLs to those closed access citations by iterating through
-        paginated API response
-    - Allow the selection of different timeframes for the CSV file
-2. Additions to compare page
-    - Changing universities on both sides and changing timeframe on the page
-    - Conduct statistical analysis for open access in the backend such as significance of difference in open access percentage 
-        due to difference in number of citations and display this information in the Compare page in the frontend
-    - Allowing comparison for ORCID IDs
-3. Dimensions AI API (for further analysis?)
-    - https://www.dimensions.ai 
-    - https://help.altmetric.com/support/solutions/articles/6000236718-dimensions-citation-data
-4. Allowing other institutions to collaborate and contribute their API and API secret keys
-    - Allow users to contribute their API and API secret keys in the frontend to give website access to full institutional data
-        - Default to St Andrews API keys
-        - Store contributed API keys in JSON file or database
-        - Create another compare page in the frontend that allows users to compare between institutions that have contributed their API keys (for fair comparison)
-    - With usage of full institutional data, add a page for research type data visualisation (articles vs books vs journals etc.)
-5. Possibly branch out to other platforms such as citations on Twitter
+STARIS Project Next Steps
+
+--Security and hosting:
+
+Currently when a user enters their API and API Secret keys, the client (frontend) passes them to the server (backend) through the fetch URL. This can be considered insecure. 
+When hosting the application, should aim to use TLS or mTLS to encrypt data between the client and server. May need a certificate.
+When implementing the monthly report feature, need a secure way of storing the emails (e.g. an encrypted database).
+
+Think about CSRF and XSS attacks.
+
+--Frontend:
+
+If needed split App.css into different CSS files. Add logic to send emails from frontend to backend. In the comparison page, add ability to provide API and API secret of comparing institution for better comparisons. 
+
+--Backend:
+
+Extend institution features to ORCID. Implement monthly reports using flask-scheduler or something else.
+
+--Issues to explore:
+
+Running the website on eduroam
